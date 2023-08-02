@@ -1,40 +1,37 @@
 <script setup>
-import { reactive } from 'vue';
-const saarcCountries = reactive([
-  { name: "Bangladesh", capital: "Dhaka" },
-  { name: "Nepal", capital: "Kathmandu" },
-  { name: "Bhutan", capital: "Thimphu" },
-  { name: "Sri Lanka", capital: "Colombo" },
-  { name: "India", capital: "New Delhi" },
-  { name: "Pakistan", capital: "Islamabad" },
-  { name: "Maldives", capital: "Male" }
+import { ref, reactive } from 'vue';
+const persons = reactive([
+  { name: 'John Doe', age: 25, email: 'john@doe.com' },
+  { name: 'Jane Doe', age: 26, email: 'jane@doe.com' },
+  { name: 'John Smith', age: 27, email: 'john@smith.com' },
+  { name: 'Jane Smith', age: 28, email: 'jane@smith.com' }
 ])
-
-const capitals = ["Dhaka", "Kathmandu", "Thimphu", "Colombo", "New Delhi", "Islamabad", "Male"]
-
-function getScore() {
-  let score = 0;
-  saarcCountries.forEach(country => {
-    if (country.answer == country.capital) {
-      score++
-    }
-  });
-  return score;
-}
+let activeIndex = ref(0)
 </script>
 
 <template>
   <section class="mx-auto container text-left">
     <h1 class="text-2xl mb-10">Vue Form</h1>
-    <p class="mb-10">{{ saarcCountries }}</p>
-    <p>Your Score: {{ getScore() }}</p>
-    <div class="my-5 border border-gray-400 p-5" v-for="country in saarcCountries" :key="country.name">
-      <p>What is the capital of {{ country.name }}?</p>
-      <template v-for="capital in capitals">
-        <input type="radio" :value="capital" :name="country.name" v-model="country.answer" />
-        <label class="ml-2 mr-2">{{ capital }}</label>
-      </template>
+    <p class="my-5">{{ persons }}</p>
+    <div class="flex ">
+      <div class="w-1/2">
+        <p>{{ activeIndex }}</p>
+
+        <p class="mb-10">
+        <h2>Select a person</h2>
+        <select name="person" id="person" v-model="activeIndex">
+          <option :value="index" v-for="(preson, index) in persons" :key="index">{{ preson.name }}</option>
+        </select>
+        </p>
+      </div>
+      <div>
+        <div class="flex flex-col">
+          <input class="my-3" type="text" v-for="(value, key, index) in persons[activeIndex]" :key="key"
+            v-model="persons[activeIndex][key]" :placeholder="key">
+        </div>
+      </div>
     </div>
+
   </section>
 </template>
 
